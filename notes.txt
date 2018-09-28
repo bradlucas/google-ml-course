@@ -1,0 +1,287 @@
+# -*- mode:org; -*-
+#+STARTUP: showall
+#+STARTUP: hidestars
+#+OPTIONS: toc:nil
+#+OPTIONS: skip:t
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./org.css" />
+#+OPTIONS: ^:nil
+
+* Introduction
+- https://developers.google.com/machine-learning/crash-course/
+
+* Prerequisites
+- https://developers.google.com/machine-learning/crash-course/prereqs-and-prework?authuser=7
+
+- Intro to Pandas
+- https://colab.research.google.com/notebooks/mlcc/intro_to_pandas.ipynb
+
+* ML Concepts
+** Introduction to ML
+- Peter Norvig video
+** Framing
+- Framing Terminology
+- https://developers.google.com/machine-learning/crash-course/framing/ml-terminology?authuser=7
+
+- Supervised Machine Learning
+- ML systems learn how to combine input to produce useful predictions on never before seen data
+
+- Features vs Labels
+
+- Label
+- A label is the thing we're predicting the y variable in simple linear regression. 
+
+- Feature
+- A feature is an input variable. The x variable in simple linear regression.
+
+A labeled example includes both feature(s) and the label.
+Labeled examples are used to train the model
+
+An unlabeled example contains features but not the label.
+Once the model is trained we us it to predict the label on our unlabeled examples
+
+A mobel defines the relationship between features and the label.
+
+Inference means applying the trained model to unlabeled examples. That is you use the trained model to make useful predictions (y1).
+
+Regression vs Classification
+A regression model predicts continuous values.
+- What is the value of a house in California?
+- What is the probability that a user will click on this ad?
+
+A classificaiton model predicts discrete values.
+- Is a given email message spam or not spam?
+- Is this an image of a dog or a cat?
+** Descending into ML
+
+Linear regression is a method for finding the straight line or
+hyperplane that best fits a set of points. This module explores linear
+regression intuitively before laying the groundwork for a machine
+learning approach to linear regression.
+
+y = b + wx
+
+y is what you want to predict (the predicted label, or desired output)
+b is a bias, sometimes referred to as w0
+w1 is the weight of feature 1. Weight is the same concept as the 'slope'
+x1 is a feature (a known input)
+
+
+Loss is the distance from a data point to the line
+Loss is always positive
+
+L2 Loss - Squared Error
+- Square of the difference between predication and label
+- (observation - prediction)^2
+- (y - y1)^2
+
+*** Linear Regression
+Models can have more than one feature each having separate weights (w1, w2, w3..)
+
+y1 = b + w1x1 + w2x2 + w3x3 [ + ...]
+
+*** Training and Loss
+
+Training a model means to learn (determine) all the good values for all the weights and bias 
+from labeled examples.
+
+In supervised learning, a machine learning algorithm builds a model by examining many examples
+and attempting to find a model that minimizes loss. This process is called empirical risk minimization.
+
+Loss is the penalty for a bad predication.
+Loass is a number indicating how bad a models prediction is on a single example.
+
+The goal in training a model is to find a set of weights and biases that have low loss, on average
+across all the examples.
+
+
+**** Squared loss function
+- Square of the difference between predication and label
+- (observation - prediction(x))^2
+- (y - y1)^2
+
+y1 is the predicated value for the example
+y is the actual value
+
+**** Mean square error (MSE)
+- The average squared loss per example over the whole dataset.
+- Sum all the squared losses for individual examples
+- Then divide by the number of examples
+
+MSE = 1/N * SUM(y - predication(x))^2 for all (x,y) points
+** Reducing Loss
+*** An Iterative Approach
+- Hot and Cold
+
+- A model is trained by starting with an initial guess for the weights and bias and
+- iteratively adjusts quesses until learning the weights and bias with the lowest
+- possible loss
+
+
+Usually, you iterate until overall loss stops changing or at least
+changes extremely slowly. When that happens, we say that the model has
+converged.
+
+*** Gradient Descent
+
+For the kinds of regression problems we've been examining, the
+resulting plot of loss vs w1 will always be convex.
+
+This means the plot will be bowl-shaped and will have one minimum
+which will be where the e slope of the line is 0.
+
+
+Calculating the loss function for every conceivable value of w1 over
+the entire data set would be an inefficient way of finding the
+convergence point.
+
+A popular, better method is something called gradient descent.
+
+1. Pick a random starting point for w1
+2. Calculate the gradient of the loss curve at the starting point.
+   The gradient of loss is equal to the derivative (slope) of the curve.
+   This tells you which way is 'warmer' or 'colder'
+
+3. The gradient is a vector so it has a direction and a magnitude.
+   The gradient always points in the direction of the steepest increase in the loss funcdtion/
+
+4. Move in the direction of the negative gradient. Add some fraction of the gradient's s
+   magnitude to the starting point to pick the next point.
+
+5. Gradient descent then repeats this process, edging closer to the minimum.
+
+
+*** Learning Rate
+The gradient vector has both a direction and magnitude. To determine the next point,
+the algorithm multiplys the gradient by a scalar known as the learning rate which is
+also called the step size.
+
+Hyperparameters are the knobs that programmers tweak in machine learning algorithms.
+
+Tweaking the learning rate is one activity required of programmers. If
+the learning rate is too small, learning will take too long.
+
+If the learning rate is too large the algorithm will bounce back and
+forth and miss the minimum.
+
+*** Optimizing Learning Rate
+
+The goal is to find a learning rate large enough that gradient descent
+converges efficiently, but not so large that it never converges.
+
+*** Stochastic Gradient Descent
+In gradient descent, a batch is the total number of examples you use
+to ca;alculate the gradient in a single iteration.
+
+For small data sets, a batch can be the entire data set.
+For large sets this approach leads to very long computations.
+
+An idea is to choose examples at random. 
+
+Stochastic gradient descent (SGD) takes this idea to the extreme in
+that it only uses a single example (batch size o 1).  Given enough
+iterations, SGD works but is very noisy.
+
+The term "stochastic" indicates that the one example comprising each
+batch is chosen at random.
+
+Mini-batch stochastic gradient descent (mini-batch SGD) is a
+compromise between full-batch iterations and SGD. A mini-batch is
+typpically between 10 and 1,0000 examopples.
+
+
+
+*** SGD & Mini-Batch Gradient Descent
+Could compute gradient over entire data set on each step, but this turns out to be unnecessary
+Computing gradient on small data samples works well
+On every step, get a new random sample
+Stochastic Gradient Descent: one example at a time
+Mini-Batch Gradient Descent: batches of 10-1000
+Loss & gradients are averaged over the batch
+** First Steps with TF
+
+Graph based computational platform
+api page on tensorflow.org
+
+tf.estimator API for neural network models
+
+- https://developers.google.com/machine-learning/crash-course/first-steps-with-tensorflow/toolkit?authuser=7
+
+TensorFlow consists of the following two components:
+
+- a graph protocol buffer
+- a runtime that executes the (distributed) graph
+
+These two components are analogous to Python code and the Python
+interpreter. Just as the Python interpreter is implemented on multiple
+hardware platforms to run Python code, TensorFlow can run the graph on
+multiple hardware platforms, including CPU, GPU, and TPU.
+
+tf.estimator is compatible with the scikit-learn API. Scikit-learn is
+an extremely popular open-source ML library in Python, with over 100k
+users, including many at Google.
+
+*** Example pseudocode for a linear classification program
+
+#+BEGIN_EXAMPLE
+import tensorflow as tf
+
+# Set up a linear classifier.
+classifier = tf.estimator.LinearClassifier(feature_columns)
+
+# Train the model on some example data.
+classifier.train(input_fn=train_input_fn, steps=2000)
+
+# Use it to predict.
+predictions = classifier.predict(input_fn=predict_input_fn)
+#+END_EXAMPLE
+
+*** graph
+
+In TensorFlow, a computation specification. Nodes in the graph
+represent operations. Edges are directed and represent passing the
+result of an operation (a Tensor) as an operand to another
+operation. Use TensorBoard to visualize a graph.
+
+*** TODO TensorFlow: Programming Exercises
+**** Pandas
+- https://colab.research.google.com/notebooks/mlcc/intro_to_pandas.ipynb?utm_source=mlcc&utm_campaign=colab-external&utm_medium=referral&utm_content=pandas-colab&hl=en&authuser=7#scrollTo=av6RYOraVG1V
+
+DataFrame, which you can imagine as a relational data table, with rows
+and named columns.  Series, which is a single column. A DataFrame
+contains one or more Series and a name for each Series.
+
+The example above used DataFrame.describe to show interesting
+statistics about a DataFrame.
+
+For more complex single-column transformations, you can use
+Series.apply. Like the Python map function, Series.apply accepts as
+an argument a lambda function, which is applied to each value.
+**** First Steps with TensorFlow
+- https://colab.research.google.com/notebooks/mlcc/first_steps_with_tensor_flow.ipynb?utm_source=mlcc&utm_campaign=colab-external&utm_medium=referral&utm_content=firststeps-colab&hl=en#scrollTo=Bd2Zkk1LE2Zr
+** -- TODO V
+** Generalization
+Generalization refers to your model's ability to adapt properly to
+new, previously unseen data, drawn from the same distribution as the
+one used to create the model.
+
+** Training and Test Sets
+** Validation
+** Representation
+** Feature Crosses
+** Regulariztion: Simplicity
+** Logistic Regression
+** Classification
+** Regularization: Sparsity
+** Introduction to Neural Nets
+** Embedding
+* ML Engineering
+** Production ML Systems
+** Static vs. Dynamic Training
+** Static vs. Dynamic Inference
+** Data Dependencies
+* ML Real World Examples
+** Cancer Prediction
+** 18th Century Literature
+** Real-World Guidelines
+* Conclusion
+
